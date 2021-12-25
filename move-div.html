@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拖曳DIV</title>
+    <style>
+        div {
+        width: 40px;
+        height: 40px;
+        border: 1px solid red;
+        background-color: red;
+        border-radius: 50%;
+        position: relative;
+        top: 0;
+        left: 0;
+}
+
+body {
+    border: 1px solid red;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+  </style>
+</head>
+
+<body>
+    <script>
+          let div1 = document.createElement('div');
+
+        document.body.appendChild(div1);
+
+        let flag = false;
+        let x;
+        let y;
+
+        div1.onmousedown = function(e) {
+            flag = true
+            x = e.clientX;
+            y = e.clientY;
+        }
+
+        document.onmousemove = function(e) {
+            if (flag === true) {
+                var deltaX = e.clientX - x;
+                var deltaY = e.clientY - y;
+                var t = parseInt(div1.style.top) || 0;
+                var l = parseInt(div1.style.left) || 0;
+                var resultX = l + deltaX;
+                var resultY = t + deltaY;
+                if (resultX < 0) {
+                    resultX = 0;
+                }
+                if (resultY < 0) {
+                    resultY = 0;
+                }
+                div1.style.top = resultY + 'px';
+                div1.style.left = resultX + 'px';
+
+                x = e.clientX;
+                y = e.clientY;
+            }
+        }
+
+        document.onmouseup = function() {
+            flag = false
+        }
+  </script>
+
+</body>
+
+</html>
