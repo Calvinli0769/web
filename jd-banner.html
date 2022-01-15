@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>京东轮播图测试</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .banner-wrap {
+            width: 600px;
+            height: 470px;
+            margin: 50px auto;
+            /* background-color: #cfa; */
+            padding: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .img-ul {
+            list-style: none;
+            position: absolute;
+        }
+
+        .img-ul li {
+            float: left;
+            margin: 0 5px;
+        }
+
+        .img-ul li img {
+            width: 590px;
+        }
+
+        .nav-a {
+            position: absolute;
+            bottom: 15px;
+        }
+
+        .nav-a a {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, .4);
+            margin: 0 5px;
+            float: left;
+        }
+
+        .nav-a .selected {
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        /* 图片切换淡入淡出效果 */
+
+        .img-animation {
+            animation: anim 1s;
+        }
+
+        /* 淡入淡出动画 */
+
+        @keyframes anim {
+            0% {
+                opacity: .5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <header class="header">
+        <div class="top-bar">
+
+        </div>
+    </header> -->
+
+
+    <main>
+        <div class="banner-wrap">
+            <ul class="img-ul">
+                <li><img src="./img/1.webp" alt=""></li>
+                <li><img src="./img/2.webp" alt=""></li>
+                <li><img src="./img/3.webp" alt=""></li>
+                <li><img src="./img/4.webp" alt=""></li>
+                <li><img src="./img/5.webp" alt=""></li>
+            </ul>
+
+            <div class="nav-a">
+                <a href="javascript:;" class="selected"></a>
+                <a href="javascript:;"></a>
+                <a href="javascript:;"></a>
+                <a href="javascript:;"></a>
+                <a href="javascript:;"></a>
+            </div>
+        </div>
+    </main>
+
+
+    <script>
+        var bannerWrap = document.querySelector('.banner-wrap')
+        var imgUl = document.querySelector(".img-ul");
+        var imgLiList = document.querySelectorAll('.img-ul li');
+        var navA = document.querySelector(".nav-a");
+        var allA = document.querySelectorAll(".nav-a a");
+
+        // ul的宽度根据图片数量定义
+        imgUl.style.width = 600 * imgLiList.length + 'px';
+        // 设定原点的居中位置，
+        navA.style.left = (bannerWrap.offsetWidth - navA.offsetWidth) / 2 + 'px';
+
+        var currentIndex = 0;
+
+        // 自动轮播
+        var timer = setInterval(function () {
+
+            currentIndex++;
+            // 如果超出范围，设置左偏移为0，从第一张开始
+            // if (imgUl.offsetLeft < -imgUl.offsetWidth + 1200) {
+            if (currentIndex >= allA.length) {
+                currentIndex = 0;
+                imgUl.style.left = 0;
+            } else {
+                // 每次向左偏移600px
+                imgUl.style.left = currentIndex * -600 + 'px';
+            }
+            autoChangePoinColor();
+
+        }, 3000)
+
+        // 为每个圆点添加事件
+        for (let i = 0; i < allA.length; i++) {
+            allA[i].index = i;
+
+            allA[i].onmousemove = function () {
+
+                // 向左移动ul，切换图片
+                imgUl.style.left = this.index * -600 + 'px';
+                currentIndex = this.index;
+                // 添加img-animation淡入淡出效果
+                imgUl.className = 'img-ul img-animation';
+
+                autoChangePoinColor();
+            }
+
+            allA[i].onmouseout = function () {
+                // 取消img-animation淡入淡出效果
+                imgUl.className = 'img-ul';
+            }
+
+            function autoChangePoinColor() {
+                for (let i = 0; i < allA.length; i++) {
+                    allA[i].className = '';
+                }
+                allA[currentIndex].className = 'selected';
+            }
+        }
+    </script>
+</body>
+
+</html>
